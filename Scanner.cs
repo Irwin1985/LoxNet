@@ -61,7 +61,9 @@ namespace LoxNet
                 case '-': AddToken(TokenType.MINUS); break;
                 case '+': AddToken(TokenType.PLUS); break;
                 case ';': AddToken(TokenType.SEMICOLON); break;
-                case '*': AddToken(TokenType.STAR); break;
+                case '*': 
+                    AddToken(TokenType.STAR);
+                    break;
                 case '!':
                     AddToken(Match('=') ? TokenType.BANG_EQUAL : TokenType.BANG);
                     break;
@@ -82,6 +84,9 @@ namespace LoxNet
                         {
                             Advance();
                         }
+                    } else if (Match('*'))
+                    {
+                        SkipMultipleComments();
                     } else
                     {
                         AddToken(TokenType.SLASH);
@@ -112,6 +117,23 @@ namespace LoxNet
                     break;
             }
 
+        }
+        private void SkipMultipleComments()
+        {
+            while (true)
+            {
+                if (Peek() == '*' && PeekNext() == '/')
+                {
+                    Advance(); // consume the '*'
+                    Advance(); // consume the '/'
+                    break;
+                }
+                if (Peek() == '\n')
+                {
+                    line++;
+                }
+                Advance();
+            }
         }
         private void Identifier()
         {

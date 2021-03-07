@@ -13,7 +13,7 @@ namespace LoxNet
 
         public static bool HadError { get => hadError; set => hadError = value; }
 
-        public static void Main(string[] args)
+        public static void Main2(string[] args)
         {
             if (args.Length > 1)
             {
@@ -29,8 +29,8 @@ namespace LoxNet
         }
         private static void RunFile(String path)
         {
-            byte[] bytes = File.ReadAllBytes(path);
-            RunFile(System.Text.Encoding.UTF8.GetString(bytes));
+            string text = File.ReadAllText(path);
+            Run(text);
             if (HadError)
             {
                 Environment.Exit(1);
